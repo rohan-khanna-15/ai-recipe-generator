@@ -24,9 +24,9 @@ A full-stack web application that generates personalized recipes using AI based 
 - bcrypt password hashing
 - Google Gemini AI API
 
-## 🚀 Live Demo
+## 🚀 Live Demo {To deply run locally with API key}
 
-**Website**: [Coming Soon - Deployment in Progress]
+**Website**: [[Login page only](https://rohan-khanna-15.github.io/ai-recipe-generator/)]
 **Source Code**: [[GitHub Repository](https://github.com/rohan-khanna-15/ai-recipe-generator)]
 
 ## 📱 Screenshots
