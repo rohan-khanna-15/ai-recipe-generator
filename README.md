@@ -105,7 +105,7 @@ PORT=5000
 
 **Rohan Khanna**
 - GitHub: [[@rohan-khanna-15](https://github.com/rohan-khanna-15)]
-- LinkedIn: [[Your LinkedIn](https://www.linkedin.com/in/rohan-khanna1512/)]
+- LinkedIn: [rohan-khanna1512](https://www.linkedin.com/in/rohan-khanna1512/)]
 
 ## 📄 License
 
