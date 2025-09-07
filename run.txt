@@ -1,0 +1,32 @@
+Commands to Run the Project
+1. Backend (FastAPI + GPT-Neo)
+Open terminal in your backend project folder (ai-recipe-generator).
+
+Activate your virtual environment:
+
+Windows:
+
+bash
+venv\Scripts\activate
+Mac/Linux:
+
+bash
+source venv/bin/activate
+Run the backend server:
+
+bash
+uvicorn main:app --reload
+Backend will run at: http://127.0.0.1:8000
+
+2. Frontend (React)
+Open a new terminal in your frontend folder (ai-recipe-frontend).
+
+Install dependencies (only first time):
+
+bash
+npm install
+Start React development server:
+	
+bash
+npm start
+Frontend will run at: http://localhost:3000
