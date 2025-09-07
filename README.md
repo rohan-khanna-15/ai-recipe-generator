@@ -104,7 +104,7 @@ PORT=5000
 ## 👨‍💻 Author
 
 **Rohan Khanna**
-- GitHub: [@rohan-khanna-15]
+- GitHub: [[@rohan-khanna-15](https://github.com/rohan-khanna-15)]
 - LinkedIn: [[Your LinkedIn](https://www.linkedin.com/in/rohan-khanna1512/)]
 
 ## 📄 License
