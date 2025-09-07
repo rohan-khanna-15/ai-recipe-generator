@@ -7,14 +7,14 @@ A full-stack web application that generates personalized recipes using AI based 
 - **AI-Powered Recipe Generation**: Uses Google Gemini 1.5-Flash for intelligent recipe creation
 - **User Authentication**: Secure JWT-based login/register system
 - **Recipe History**: Persistent storage of generated recipes per user
-- **Responsive UI**: ChatGPT-style sidebar interface
+- **Responsive UI**: Responsive sidebar interface
 - **Real-time Generation**: Instant AI responses with loading states
 
 ## 🛠️ Tech Stack
 
 ### Frontend
 - React.js
-- CSS3 (Responsive Design)
+- CSS3 
 - Context API for state management
 
 ### Backend
@@ -27,11 +27,12 @@ A full-stack web application that generates personalized recipes using AI based 
 ## 🚀 Live Demo
 
 **Website**: [Coming Soon - Deployment in Progress]
-**Source Code**: [GitHub Repository]
+**Source Code**: [[GitHub Repository](https://github.com/rohan-khanna-15/ai-recipe-generator)]
 
 ## 📱 Screenshots
-
-[Add screenshots here]
+<img width="1918" height="831" alt="image" src="https://github.com/user-attachments/assets/d8ba2ea0-b486-4ed8-89e7-dd42f71fee0d" />
+<img width="1897" height="825" alt="image" src="https://github.com/user-attachments/assets/47266cf8-49a9-4e28-add9-64dfb5d5ea17" />
+<img width="1918" height="828" alt="image" src="https://github.com/user-attachments/assets/fd03e411-e618-40d9-a549-2332fe4fd797" />
 
 ## 🔧 Local Development
 
@@ -103,8 +104,8 @@ PORT=5000
 ## 👨‍💻 Author
 
 **Rohan Khanna**
-- GitHub: [@rohan-khanna-15]
-- LinkedIn: [Your LinkedIn]
+- GitHub: [[@rohan-khanna-15](https://github.com/rohan-khanna-15)]
+- LinkedIn: [rohan-khanna1512](https://www.linkedin.com/in/rohan-khanna1512/)]
 
 ## 📄 License
 
