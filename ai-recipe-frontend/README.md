@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+# AI Recipe Generator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web application that generates personalized recipes using AI based on user-provided ingredients.
 
-## Available Scripts
+## 🌟 Features
 
-In the project directory, you can run:
+- **AI-Powered Recipe Generation**: Uses Google Gemini 1.5-Flash for intelligent recipe creation
+- **User Authentication**: Secure JWT-based login/register system
+- **Recipe History**: Persistent storage of generated recipes per user
+- **Responsive UI**: Responsive sidebar interface
+- **Real-time Generation**: Instant AI responses with loading states
 
-### `npm start`
+## 🛠️ Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Frontend
+- React.js
+- CSS3 
+- Context API for state management
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
+- Node.js with Express
+- MySQL database
+- JWT authentication
+- bcrypt password hashing
+- Google Gemini AI API
 
-### `npm test`
+## 🚀 Live Demo
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Website**: [Coming Soon - Deployment in Progress]
+**Source Code**: [[GitHub Repository](https://github.com/rohan-khanna-15/ai-recipe-generator)]
 
-### `npm run build`
+## 📱 Screenshots
+<img width="1918" height="831" alt="image" src="https://github.com/user-attachments/assets/d8ba2ea0-b486-4ed8-89e7-dd42f71fee0d" />
+<img width="1897" height="825" alt="image" src="https://github.com/user-attachments/assets/47266cf8-49a9-4e28-add9-64dfb5d5ea17" />
+<img width="1918" height="828" alt="image" src="https://github.com/user-attachments/assets/fd03e411-e618-40d9-a549-2332fe4fd797" />
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🔧 Local Development
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Prerequisites
+- Node.js (v16+)
+- MySQL
+- Google Gemini API Key
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Setup
+1. Clone the repository
+```bash
+git clone [your-repo-url]
+cd ai-recipe-generator
+```
 
-### `npm run eject`
+2. Backend Setup
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Add your environment variables
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Frontend Setup
+```bash
+cd ai-recipe-frontend
+npm install
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🌐 Environment Variables
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```env
+# Backend (.env)
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=recipe_generator
+JWT_SECRET=your_jwt_secret
+GEMINI_API_KEY=your_gemini_api_key
+PORT=5000
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 📝 API Endpoints
 
-## Learn More
+- `POST /api/register` - User registration
+- `POST /api/login` - User authentication
+- `POST /api/generate-recipe` - Generate AI recipe
+- `GET /api/recipes` - Get user's recipe history
+- `DELETE /api/recipes` - Clear recipe history
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔒 Security Features
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- JWT token-based authentication
+- bcrypt password hashing
+- CORS protection
+- SQL injection prevention
+- User data isolation
 
-### Code Splitting
+## 🎯 Future Enhancements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Recipe sharing functionality
+- Ingredient nutrition information
+- Recipe rating system
+- Export recipes as PDF
+- Mobile app version
 
-### Analyzing the Bundle Size
+## 👨‍💻 Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Rohan Khanna**
+- GitHub: [[@rohan-khanna-15](https://github.com/rohan-khanna-15)]
+- LinkedIn: [rohan-khanna1512](https://www.linkedin.com/in/rohan-khanna1512/)]
 
-### Making a Progressive Web App
+## 📄 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License.
