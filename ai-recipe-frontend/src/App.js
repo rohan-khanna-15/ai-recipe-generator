@@ -1,80 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Auth from './Auth';
+import { AuthProvider, useAuth } from './AuthContext';
 
-function App() {
+function RecipeApp() {
+  const { user, logout, getAuthHeaders } = useAuth();
   const [ingredients, setIngredients] = useState('');
   const [recipe, setRecipe] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [recipeHistory, setRecipeHistory] = useState([]);
 
-  // Load recipe history from localStorage on component mount
+  // Load recipe history from backend when user logs in
   useEffect(() => {
-    const savedHistory = localStorage.getItem('recipeHistory');
-    if (savedHistory) {
-      try {
-        setRecipeHistory(JSON.parse(savedHistory));
-      } catch (error) {
-        console.error('Failed to load recipe history:', error);
-        localStorage.removeItem('recipeHistory');
+    if (user) {
+      loadRecipeHistory();
+    }
+  }, [user]);
+
+  // Load recipes from backend
+  const loadRecipeHistory = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'}/api/recipes`, {
+        headers: getAuthHeaders()
+      });
+      
+      if (response.ok) {
+        const recipes = await response.json();
+        setRecipeHistory(recipes);
       }
-    }
-  }, []);
-
-  // Save recipe history to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('recipeHistory', JSON.stringify(recipeHistory));
-  }, [recipeHistory]);
-
-  const generateRecipeWithGemini = async (ingredientsList) => {
-    const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-    
-    if (!apiKey) {
-      throw new Error('Gemini API key not configured. Please add REACT_APP_GEMINI_API_KEY to your environment variables.');
-    }
-
-    const prompt = `Create a detailed recipe using these ingredients: ${ingredientsList}
-
-Please provide:
-1. Recipe name
-2. Cooking time
-3. Difficulty level
-4. Complete ingredient list with quantities
-5. Step-by-step cooking instructions
-6. Any helpful cooking tips
-
-Format the response in a clear, easy-to-read manner.`;
-
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: prompt
-          }]
-        }]
-      })
-    });
-
-    if (!response.ok) {
-      if (response.status === 403) {
-        throw new Error('Invalid API key or API access denied. Please check your Gemini API key.');
-      } else if (response.status === 429) {
-        throw new Error('API rate limit exceeded. Please try again later.');
-      } else {
-        throw new Error(`API error: ${response.status}`);
-      }
-    }
-
-    const data = await response.json();
-    
-    if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-      return data.candidates[0].content.parts[0].text;
-    } else {
-      throw new Error('Unexpected response format from Gemini API');
+    } catch (error) {
+      console.error('Failed to load recipe history:', error);
     }
   };
 
@@ -90,21 +46,23 @@ Format the response in a clear, easy-to-read manner.`;
     setRecipe('');
 
     try {
-      const generatedRecipe = await generateRecipeWithGemini(ingredients.trim());
-      setRecipe(generatedRecipe);
-      
-      // Add to history
-      const historyItem = {
-        id: Date.now(),
-        ingredients: ingredients.trim(),
-        recipe: generatedRecipe,
-        timestamp: new Date().toISOString()
-      };
-      
-      setRecipeHistory(prev => [historyItem, ...prev.slice(0, 9)]); // Keep only last 10 recipes
-      
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'}/api/generate-recipe`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ ingredients: ingredients.trim() }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setRecipe(data.recipe);
+        // Recipe is automatically saved by the backend
+        loadRecipeHistory();
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to generate recipe');
+      }
     } catch (error) {
-      setError(error.message);
+      setError('Network error. Please check your connection and try again.');
       console.error('Error:', error);
     } finally {
       setLoading(false);
@@ -122,9 +80,27 @@ Format the response in a clear, easy-to-read manner.`;
     setRecipe(historyItem.recipe);
   };
 
-  const clearHistory = () => {
+  const clearHistory = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'}/api/recipes`, {
+        method: 'DELETE',
+        headers: getAuthHeaders()
+      });
+
+      if (response.ok) {
+        setRecipeHistory([]);
+      }
+    } catch (error) {
+      console.error('Failed to clear history:', error);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    setRecipe('');
+    setIngredients('');
     setRecipeHistory([]);
-    localStorage.removeItem('recipeHistory');
+    setError('');
   };
 
   // Format timestamp for display
@@ -138,6 +114,12 @@ Format the response in a clear, easy-to-read manner.`;
       <div className="sidebar">
         <div className="sidebar-header">
           <h2>Recipe History</h2>
+          <div className="user-info">
+            <span>Welcome, {user.name}!</span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
           {recipeHistory.length > 0 && (
             <button className="clear-history-btn" onClick={clearHistory}>
               Clear All
@@ -158,7 +140,7 @@ Format the response in a clear, easy-to-read manner.`;
                     ? `${item.ingredients.substring(0, 50)}...` 
                     : item.ingredients}
                 </div>
-                <div className="history-timestamp">{formatTimestamp(item.timestamp)}</div>
+                <div className="history-timestamp">{formatTimestamp(item.created_at)}</div>
                 <button 
                   className="load-recipe-btn"
                   onClick={() => loadFromHistory(item)}
@@ -174,58 +156,61 @@ Format the response in a clear, easy-to-read manner.`;
       {/* Main Content Area */}
       <div className="main-content">
         <div className="container">
-          <h1>🍳 AI Recipe Generator</h1>
-          <p className="subtitle">Enter your ingredients and let AI create amazing recipes for you!</p>
-          
-          {!process.env.REACT_APP_GEMINI_API_KEY && (
-            <div className="api-key-warning">
-              <p><strong>⚠️ Setup Required:</strong> To use this app, you need to:</p>
-              <ol>
-                <li>Get a free Gemini API key from <a href="https://makersuite.google.com/app/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio</a></li>
-                <li>Add it as <code>REACT_APP_GEMINI_API_KEY</code> in your environment variables</li>
-              </ol>
-            </div>
-          )}
+          <h1>AI Recipe Generator</h1>
           
           <form onSubmit={handleSubmit}>
             <textarea
               rows="4"
-              placeholder="Enter ingredients separated by commas (e.g., chicken, rice, onions, garlic, tomatoes)"
+              placeholder="Enter ingredients separated by commas"
               value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
               disabled={loading}
               required
             />
-            <div className="button-group">
-              <button type="submit" className="generate" disabled={loading || !process.env.REACT_APP_GEMINI_API_KEY}>
-                {loading ? 'Generating...' : '🍳 Generate Recipe'}
+            <div>
+              <button type="submit" className="generate" disabled={loading}>
+                {loading ? 'Generating...' : 'Generate Recipe'}
               </button>
               <button type="button" className="clear" onClick={handleClear} disabled={loading}>
-                🗑️ Clear
+                Clear
               </button>
             </div>
           </form>
 
-          {error && (
-            <div className="error-container">
-              <p className="error">❌ {error}</p>
-            </div>
-          )}
+          {error && <p className="error">{error}</p>}
 
           {recipe && (
             <div className="recipe-container">
-              <h3>🎉 Generated Recipe:</h3>
-              <div className="recipe-content">
-                {recipe.split('\n').map((line, index) => (
-                  <p key={index}>{line}</p>
-                ))}
-              </div>
+              <h3>Generated Recipe:</h3>
+              <p>{recipe}</p>
             </div>
           )}
         </div>
       </div>
     </div>
   );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+function AppContent() {
+  const { isAuthenticated, loading, login } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
+
+  return isAuthenticated() ? <RecipeApp /> : <Auth onLogin={login} />;
 }
 
 export default App;
