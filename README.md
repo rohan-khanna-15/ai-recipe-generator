@@ -27,7 +27,7 @@ A full-stack web application that generates personalized recipes using AI based 
 ## 🚀 Live Demo
 
 **Website**: [Coming Soon - Deployment in Progress]
-**Source Code**: [GitHub Repository]
+**Source Code**: [[GitHub Repository](https://github.com/rohan-khanna-15/ai-recipe-generator)]
 
 ## 📱 Screenshots
 <img width="1918" height="831" alt="image" src="https://github.com/user-attachments/assets/d8ba2ea0-b486-4ed8-89e7-dd42f71fee0d" />
